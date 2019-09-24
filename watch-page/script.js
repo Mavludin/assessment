@@ -15,8 +15,7 @@ $(document).ready(function() {
 		div.appendChild(img);
 
 		let heading = document.createElement('h3');
-		let headingText = document.createTextNode(imgObj.title);
-		heading.appendChild(headingText);
+		heading.innerHTML = imgObj.title;
 		div.appendChild(heading);
 
 		playlist.appendChild(div);
@@ -29,29 +28,23 @@ $(document).ready(function() {
 			createThumbnails(imgObj[i]);
 		}
 
-		let iframe = document.getElementById('video-player');
-
-		let linkLastHash = iframe.src.lastIndexOf("/")+1;
-		let iframeLinkId = iframe.src.substr(linkLastHash, iframe.src.length - linkLastHash);
-
 		let thumbs = document.querySelectorAll('#playlist-wrapper img');
 		let div = document.querySelectorAll(".playlist-card");
 
-		div[0].classList.toggle("active-card");
+		$('.playlist-card:first').addClass('active-card');
 
 		for (let i=0; i<thumbs.length; i++) {
 		thumbs[i].addEventListener('click', function() {
 			$.get('http://5d76bf96515d1a0014085cf9.mockapi.io/video/'+(i+1), (data, status) => {
 				let videoObj = data;
-				iframe.src = iframe.src.substr(0,linkLastHash);
-				iframe.src += videoObj.vimeoId;
+				$('iframe').attr('src', `https://player.vimeo.com/video/${videoObj.vimeoId}`)
 				$('#video-title').html(videoObj.title);
 				$('#video-description').html(videoObj.description);
 				$('#views-count').html(videoObj.views);
 
-				let current = document.getElementsByClassName("active-card");
-				current[0].className = current[0].className.replace(" active-card", "");
+				$('.playlist-card').removeClass('active-card');
 				div[i].className += " active-card";
+
 				$(window).scrollTop(0);
 			})
 		})

@@ -6,8 +6,7 @@ $(document).ready(function(){
 		section.className = 'quiz-item';
 
 		let heading = document.createElement('h3');
-		let headingText = document.createTextNode('Q'+quizObj.id+'.'+quizObj.question);
-		heading.appendChild(headingText);
+		heading.innerHTML = `Q${quizObj.id}.${quizObj.question}`;
 		section.appendChild(heading);
 
 		for (let i=0; i<quizObj.options.length; i++) {
@@ -18,11 +17,10 @@ $(document).ready(function(){
 			let input = document.createElement('input');
 			input.type = 'radio';
 			input.required = true;
-			input.name = 'q'+quizObj.id;
+			input.name = `q${quizObj.id}`;
 			input.value = i+1;
 			let par = document.createElement('p');
-			let parText = document.createTextNode(quizObj.options[i]);
-			par.appendChild(parText);
+			par.innerHTML = quizObj.options[i];
 			label.appendChild(input);
 			label.appendChild(par);
 
@@ -39,7 +37,6 @@ $(document).ready(function(){
 			var quizObj = data;
 			for (let i=0; i<quizObj.length; i++) {
 				createQuizSections(quizObj[i]);
-				console.log(quizObj[i]);
 				localAnswers.push(quizObj[i].answer);
 			}
 			createSubmitButton();
