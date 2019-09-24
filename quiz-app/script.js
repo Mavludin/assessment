@@ -35,7 +35,7 @@ $(document).ready(function(){
 
 	var localAnswers = [];
 	const getData = () => {
-		$.get('http://5d76bf96515d1a0014085cf9.mockapi.io/quiz', function (data, status) {
+		$.get('http://5d76bf96515d1a0014085cf9.mockapi.io/quiz', (data, status) => {
 			var quizObj = data;
 			for (let i=0; i<quizObj.length; i++) {
 				createQuizSections(quizObj[i]);
