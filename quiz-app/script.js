@@ -1,44 +1,48 @@
 $(document).ready(function(){
 
-	const createQuizSections = quizObj => {
+	const createQuizSections = obj => {
 
 		let section = document.createElement('section');
 		section.className = 'quiz-item';
 
 		let heading = document.createElement('h3');
-		heading.innerHTML = `Q${quizObj.id}.${quizObj.question}`;
+		heading.innerHTML = `Q${obj.id}. ${obj.question}`;
 		section.appendChild(heading);
 
-		for (let i=0; i<quizObj.options.length; i++) {
+			obj.options.map(item => {
+				let div = document.createElement('div');
+				div.className = "option-wrapper";
+				let label = document.createElement('label');
+				let input = document.createElement('input');
+				input.type = 'radio';
+				input.required = true;
+				input.name = `q${item.id}`;
+				input.value = item.id;
+				let par = document.createElement('p');
+				par.innerHTML = item;
+				label.appendChild(input);
+				label.appendChild(par);
 
-			let div = document.createElement('div');
-			div.className = "option-wrapper";
-			let label = document.createElement('label');
-			let input = document.createElement('input');
-			input.type = 'radio';
-			input.required = true;
-			input.name = `q${quizObj.id}`;
-			input.value = i+1;
-			let par = document.createElement('p');
-			par.innerHTML = quizObj.options[i];
-			label.appendChild(input);
-			label.appendChild(par);
-
-			div.appendChild(label);
-			section.appendChild(div);
-		}
+				div.appendChild(label);
+				section.appendChild(div);
+			})
 
 		$('form').append(section);
+
 	}
 
 	var localAnswers = [];
 	const getData = () => {
-		$.get('http://5d76bf96515d1a0014085cf9.mockapi.io/quiz', (data, status) => {
-			var quizObj = data;
-			for (let i=0; i<quizObj.length; i++) {
-				createQuizSections(quizObj[i]);
-				localAnswers.push(quizObj[i].answer);
-			}
+		$.get('http://5d76bf96515d1a0014085cf9.mockapi.io/quiz', data => {
+			
+			data.map(item => {
+				createQuizSections(item);
+			});
+
+			localAnswers = data.map(item => {
+				return item.answer;
+			});
+			console.log(localAnswers)
 			createSubmitButton();
 			processAnswers();
 		});
@@ -53,6 +57,42 @@ $(document).ready(function(){
 	}
 
 	const processAnswers = () => {
+
+			$('.quiz-item:nth-child(1) input').on('change', function() {
+				if ( $("input[type='radio']").eq(2).is(':checked') ) {
+					console.log('3');
+					$('.quiz-item:nth-child(1) .option-wrapper').eq(2).css('background-color', 'green');
+				} else $('.quiz-item:nth-child(1) .option-wrapper').eq(2).css('background-color', 'inherit');
+			})
+
+			$('.quiz-item:nth-of-type(2) input').on('change', function() {
+			
+				if ( $("input[type='radio']:nth-of-type(1)").is(':checked') ) {
+					console.log('1');
+					$('.quiz-item:nth-of-type(2) .option-wrapper:nth-of-type(1)').css('background-color', 'green');
+				} else $('.quiz-item:nth-of-type(2) .option-wrapper:nth-of-type(1)').css('background-color', 'inherit');
+			})
+
+			$('.quiz-item:nth-of-type(3) input').on('change', function() {
+			
+				if ( $("input[type='radio']:nth-of-type(3)").is(':checked') ) {
+					$('.quiz-item:nth-of-type(3) .option-wrapper:nth-of-type(3)').css('background-color', 'green');
+				} else $('.quiz-item:nth-of-type(3) .option-wrapper:nth-of-type(3)').css('background-color', 'inherit');
+			})
+
+			// $('.quiz-item:nth-child(4) input').on('change', function() {
+			
+			// 	if ( $("input[type='radio']:nth-of-type(3)").is(':checked') ) {
+			// 		$('.quiz-item:nth-child(4) .option-wrapper:nth-of-type(3)').css('background-color', 'green');
+			// 	} else $('.quiz-item:nth-child(4) .option-wrapper:nth-of-type(3)').css('background-color', 'inherit');
+			// })
+
+			$('.quiz-item:nth-of-type(5) input').on('change', function() {
+			
+				if ( $("input[type='radio']:first").is(':checked') ) {
+					$('.quiz-item:nth-of-type(5) .option-wrapper:first').css('background-color', 'green');
+				} else $('.quiz-item:nth-of-type(5) .option-wrapper:first').css('background-color', 'inherit');
+			});
 
 		    $('form').submit(function(e) {
 		    	e.preventDefault();

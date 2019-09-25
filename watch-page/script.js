@@ -1,55 +1,49 @@
 $(document).ready(function() {
 
-
-	const createThumbnails = imgObj => {
-
-		let playlist = document.getElementById('playlist-wrapper');
+	const createThumbnails = (obj, pos) => {
 
 		let div = document.createElement('div');
-		div.id = "card" + imgObj.id;
+		div.id = "card" + obj.id;
 		div.className = 'playlist-card';
 
 		let img = document.createElement('img');
 		img.className = 'thumbnail';
-		img.src = imgObj.thumbnail;
+		img.src = obj.thumbnail;
 		div.appendChild(img);
 
+		if (pos === 0) {
+			div.classList.add('active-card');
+		}
+
+		div.onclick = () => {
+			updateVideoData(obj.id);
+			$('.playlist-card').removeClass('active-card');
+			div.classList.add('active-card');
+		}
+
 		let heading = document.createElement('h3');
-		heading.innerHTML = imgObj.title;
+		heading.innerHTML = obj.title;
 		div.appendChild(heading);
 
-		playlist.appendChild(div);
-		let thumbs = document.querySelectorAll('#playlist-wrapper img');
+		return div;
 	}
 
-	$.get('https://5d76bf96515d1a0014085cf9.mockapi.io/playlist', (data, status) => {
-		var imgObj = data;
-		for (let i=0; i<imgObj.length; i++) {
-			createThumbnails(imgObj[i]);
-		}
-
-		let thumbs = document.querySelectorAll('#playlist-wrapper img');
-		let div = document.querySelectorAll(".playlist-card");
-
-		$('.playlist-card:first').addClass('active-card');
-
-		for (let i=0; i<thumbs.length; i++) {
-		thumbs[i].addEventListener('click', function() {
-			$.get('http://5d76bf96515d1a0014085cf9.mockapi.io/video/'+(i+1), (data, status) => {
-				let videoObj = data;
-				$('iframe').attr('src', `https://player.vimeo.com/video/${videoObj.vimeoId}`)
-				$('#video-title').html(videoObj.title);
-				$('#video-description').html(videoObj.description);
-				$('#views-count').html(videoObj.views);
-
-				$('.playlist-card').removeClass('active-card');
-				div[i].className += " active-card";
-
-				$(window).scrollTop(0);
-			})
+	$.get('https://5d76bf96515d1a0014085cf9.mockapi.io/playlist', (data) => {
+		const obj = data;
+		obj.map ((item, pos) => {
+			$('#playlist-wrapper').append(createThumbnails(item, pos));
 		})
-		}
 
 	})
+
+	const updateVideoData = (videoId) => {
+		$.get(`http://5d76bf96515d1a0014085cf9.mockapi.io/video/${videoId}`, (data) => {
+				$('iframe').attr('src', `https://player.vimeo.com/video/${data.vimeoId}`);
+				$('#video-title').html(data.title);
+				$('#video-description').html(data.description);
+				$('#views-count').html(data.views);
+				$(window).scrollTop(0);
+		});
+	}
 
 })
