@@ -139,3 +139,28 @@ body {
     font-size: 60px;
     font-weight: 800;
 }
+
+#aside-counter {
+    box-sizing: border-box;
+    width: 147px;
+    background-color: #2b3252;
+    border-radius: 8px;
+    position: fixed;
+    top: 222px;
+    right: 18%;
+    height: 100px;
+    text-align: center;
+    padding: 15px 5px;
+}
+
+#aside-counter h3 {
+    color: #fad744;
+    font-family: 'Caveat Brush', cursive;
+    font-size: 1.6em;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+#aside-counter span {
+    display: block;
+}

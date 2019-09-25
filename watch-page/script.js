@@ -19,22 +19,21 @@ $(document).ready(function() {
 			updateVideoData(obj.id);
 			$('.playlist-card').removeClass('active-card');
 			div.classList.add('active-card');
-		}
+		};
 
 		let heading = document.createElement('h3');
 		heading.innerHTML = obj.title;
 		div.appendChild(heading);
 
 		return div;
-	}
+	};
 
 	$.get('https://5d76bf96515d1a0014085cf9.mockapi.io/playlist', (data) => {
-		const obj = data;
-		obj.map ((item, pos) => {
+		data.map ((item, pos) => {
 			$('#playlist-wrapper').append(createThumbnails(item, pos));
 		})
 
-	})
+	});
 
 	const updateVideoData = (videoId) => {
 		$.get(`http://5d76bf96515d1a0014085cf9.mockapi.io/video/${videoId}`, (data) => {
@@ -46,4 +45,4 @@ $(document).ready(function() {
 		});
 	}
 
-})
+});
