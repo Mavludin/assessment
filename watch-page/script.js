@@ -36,7 +36,7 @@ $(document).ready(function() {
 	});
 
 	const updateVideoData = (videoId) => {
-		$.get(`http://5d76bf96515d1a0014085cf9.mockapi.io/video/${videoId}`, (data) => {
+		$.get(`https://5d76bf96515d1a0014085cf9.mockapi.io/video/${videoId}`, (data) => {
 				$('iframe').attr('src', `https://player.vimeo.com/video/${data.vimeoId}`);
 				$('#video-title').html(data.title);
 				$('#video-description').html(data.description);
