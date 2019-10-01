@@ -30,7 +30,13 @@ $(document).ready(function(){
 
 	};
 
-	let localAnswers = [];
+	let localAnswers = [], right = 0;
+
+	let counting = () => {
+		++right;
+		$('#aside-counter h3 span').html(`${right}/5`);
+	}
+
 	const getData = () => {
 		$.get('http://5d76bf96515d1a0014085cf9.mockapi.io/quiz', data => {
 			
@@ -43,9 +49,12 @@ $(document).ready(function(){
 			});
 			console.log(localAnswers);
 
-			$('.option-wrapper').click(function(){
+			$('.option-wrapper').click(function(e){
+
+				if ($(this).siblings().is('[style]')) e.preventDefault();
+
 				const input = $(this).find('input[type="radio"]');
-			
+				
 				if ( input.prop('checked') ) {
 					var inputValue = parseInt(input.val());
 					var inputName = parseInt(input.attr('name').substr(1,1));
@@ -53,25 +62,23 @@ $(document).ready(function(){
 					let flag = false;
 					for (let i=0; i<localAnswers.length; i++) {
 						if (localAnswers[i] == inputValue && i+1 == inputName) {
+							counting();
 							flag = true;
 							break;
-						} else {
-							flag = false;
 						}
 					}
+
 					if (flag) {
 						$(this).css('background-color', 'green');
 					} else {
 						$(this).css('background-color', 'red');
 						localAnswers.map((item, pos) => {
 							if (pos+1 == inputName) {
-								// console.log($(this).parent().find('.option-wrapper'));
-
+								$(this).parent().find('.option-wrapper').eq(item-1).css('background-color', 'green');
 							}
 						});
 					}
 				}
-
 			});
 			createSubmitButton();
 			processAnswers();
@@ -92,19 +99,28 @@ $(document).ready(function(){
 	    	e.preventDefault();
 		    $('#modal-wrapper').show();
 		    var result = $(this).serialize();
-    		result = result.substr(1, result.length).split("&");
+    		result = result.substr(0, result.length).split("&");
 
 			let counter = 0;
 			for (let i=0;i<result.length;i++) {
 				if (result[i].substr(3,1) == localAnswers[i]) counter++;
 			}
 
-			$('#result-modal h3').html( $(this).html()+counter + "/5" );
+			$('#result-modal h3').html( $('#result-modal h3').html()+counter + "/5" );
 
 		});
+
+		$('#backdrop').click(function(){
+			$('#modal-wrapper').fadeOut();
+		});
+
+		$(document).on('keyup', function(e) {
+       		if (e.key == "Escape") {
+				$('#modal-wrapper').fadeOut();
+       		}
+  		});
 
 	};
 
 	getData();
-
 });
