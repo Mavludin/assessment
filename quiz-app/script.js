@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function(){
 
 	const createQuizSections = obj => {
 		let section = document.createElement('section');
@@ -47,7 +47,10 @@ $(document).ready(function(){
 			localAnswers = data.map(item => {
 				return item.answer;
 			});
-			console.log(localAnswers);
+
+			let submitSection = '<section id="submit-section"></section>';
+			$('form').append(submitSection);
+			$('#submit-section').append('<input id="btn-submit" type="submit" value="Submit">');
 
 			$('.option-wrapper').click(function(e){
 
@@ -56,8 +59,8 @@ $(document).ready(function(){
 				const input = $(this).find('input[type="radio"]');
 				
 				if ( input.prop('checked') ) {
-					var inputValue = parseInt(input.val());
-					var inputName = parseInt(input.attr('name').substr(1,1));
+					let inputValue = parseInt(input.val());
+					let inputName = parseInt(input.attr('name').substr(1,1));
 
 					let flag = false;
 					for (let i=0; i<localAnswers.length; i++) {
@@ -80,47 +83,37 @@ $(document).ready(function(){
 					}
 				}
 			});
-			createSubmitButton();
-			processAnswers();
-		});
-
-	};
-
-	const createSubmitButton = () => {
-
-		let submitSection = '<section id="submit-section"></section>';
-		$('form').append(submitSection);
-		$('#submit-section').append('<input id="btn-submit" type="submit" value="Submit">');
-	};
-
-	const processAnswers = () => {
-
-	    $('form').submit(function(e) {
-	    	e.preventDefault();
-		    $('#modal-wrapper').show();
-		    var result = $(this).serialize();
-    		result = result.substr(0, result.length).split("&");
-
-			let counter = 0;
-			for (let i=0;i<result.length;i++) {
-				if (result[i].substr(3,1) == localAnswers[i]) counter++;
-			}
-
-			$('#result-modal h3').html( $('#result-modal h3').html()+counter + "/5" );
 
 		});
-
-		$('#backdrop').click(function(){
-			$('#modal-wrapper').fadeOut();
-		});
-
-		$(document).on('keyup', function(e) {
-       		if (e.key == "Escape") {
-				$('#modal-wrapper').fadeOut();
-       		}
-  		});
-
+		processAnswers();
 	};
-
 	getData();
 });
+
+const processAnswers = () => {
+
+    $('form').submit(function(e) {
+    	e.preventDefault();
+	    $('#modal-wrapper').show();
+
+		// let result = $(this).serialize();
+		// result = result.substr(0, result.length).split("&");
+		// let counter = 0;
+		// for (let i=0;i<result.length;i++) {
+		// 	if (result[i].substr(3,1) == localAnswers[i]) counter++;
+		// }
+
+		$('#result').html($('#aside-counter span').html());
+	});
+
+	$('#backdrop').click(function(){
+		$('#modal-wrapper').fadeOut();
+	});
+
+	$(document).on('keyup', function(e) {
+   		if (e.key == "Escape") {
+			$('#modal-wrapper').fadeOut();
+   		}
+		});
+
+};
