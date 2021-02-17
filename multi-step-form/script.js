@@ -3,19 +3,14 @@ $(document).ready(function() {
 		e.preventDefault();
 	});
 
-	let namePattern = /^[A-Za-z]+$/;
+	let namePattern = /^[A-Za-zА-Яа-я]+$/;
 	let emailPattern = /^[\w\.\-]+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
 	let firstName = document.getElementById('first_name');
 	firstName.oninput = e => {
-
-		if (e.target.value == "") {
-			$('#first_name_error').html("This field can't be empty");
+		if ( !namePattern.test(e.target.value) ) {
 			$('#first_name_error').show();
-		}
-		else if ( !(e.target.value.match(namePattern)) ) {
-			$('#first_name_error').show();
-			$('#first_name_error').html('Please enter a valid first name');
+			$('#first_name_error').html('Введите пимя верно');
 			$('#StepOneNext').click(function(e){e.preventDefault();})
 		}
 		else $('#first_name_error').hide();
@@ -25,11 +20,11 @@ $(document).ready(function() {
 	email.oninput = e => {
 
 		if (e.target.value == "") {
-			$('#email_error').html("This field can't be empty");
+			$('#email_error').html("Это поле не может быть пустым");
 			$('#email_error').show();
 		} else if ( !(e.target.value.match(emailPattern)) ) {
 			$('#email_error').show();
-			$('#email_error').html('Please enter a valid Email');
+			$('#email_error').html('Введите почту верно');
 			$('#StepOneNext').click(function(e){e.preventDefault();})
 		}
 		else $('#email_error').hide();
@@ -42,23 +37,23 @@ $(document).ready(function() {
 			
 			e.preventDefault();
 
-			$('#first_name_error').html("This field can't be empty");
-			$('#email_error').html("This field can't be empty");
+			$('#first_name_error').html("Это поле не может быть пустым");
+			$('#email_error').html("Это поле не может быть пустым");
 			$('#first_name_error').show();
 			$('#email_error').show();
 
 		} else if ( $('#email').val() == "" ) {
 			e.preventDefault();
-			$('#email_error').html("This field can't be empty");
+			$('#email_error').html("Это поле не может быть пустым");
 			$('#email_error').show();
 
 		} else if ( $('#first_name').val() == "" ) {
 			e.preventDefault();
-			$('#first_name_error').html("This field can't be empty");
+			$('#first_name_error').html("Это поле не может быть пустым");
 			$('#first_name_error').show();
 		} else { 
-				$('#StepOneContainer').hide();
-				$('#StepTwoContainer').show();
+			$('#StepOneContainer').hide();
+			$('#StepTwoContainer').show();
 		}
 
 	});
@@ -69,15 +64,11 @@ $(document).ready(function() {
 	});
 
 
-	let contactPattern = /^\+[0-9]+$/;
+	let contactPattern = /^\+?[0-9]+$/;
 	let contact = document.getElementById('contact');
 	contact.oninput = e => {
 
-		if (e.target.value == "") {
-			$('#contact_error').html("This field can't be empty");
-			$('#contact_error').show();
-		}
-		else if ( !(e.target.value.match(contactPattern)) ) {
+		if ( !contactPattern.test(e.target.value) ) {
 			$('#contact_error').show();
 			$('#contact_error').html('Please enter a valid contact');
 			$('#StepTwoNext').click(function(e){e.preventDefault();})
@@ -89,7 +80,7 @@ $(document).ready(function() {
 	country.oninput = e => {
 
 		if (e.target.value == "") {
-			$('#country_error').html("This field can't be empty");
+			$('#country_error').html("Это поле не может быть пустым");
 			$('#country_error').show();
 		} else if ( !(e.target.value.match(namePattern)) ) {
 			$('#country_error').show();
@@ -106,19 +97,19 @@ $(document).ready(function() {
 			
 			e.preventDefault();
 
-			$('#country_error').html("This field can't be empty");
-			$('#contact_error').html("This field can't be empty");
+			$('#country_error').html("Это поле не может быть пустым");
+			$('#contact_error').html("Это поле не может быть пустым");
 			$('#country_error').show();
 			$('#contact_error').show();
 
 		} else if ( $('#country').val() == "" ) {
 			e.preventDefault();
-			$('#country_error').html("This field can't be empty");
+			$('#country_error').html("Это поле не может быть пустым");
 			$('#country_error').show();
 
 		} else if ( $('#contact').val() == "" ) {
 			e.preventDefault();
-			$('#contact_error').html("This field can't be empty");
+			$('#contact_error').html("Это поле не может быть пустым");
 			$('#contact_error').show();
 		} else { 
 				$('#StepTwoContainer').hide();
@@ -148,6 +139,12 @@ $(document).ready(function() {
 			$('#select_program_error').show();
 			$('#message_error').show();
 			e.preventDefault();
+		} else if ( $('#select_program option:selected').val() == "" ) {
+			e.preventDefault();
+			$('#select_program_error').show();
+		} else if ( message.value == "" ) {
+			e.preventDefault();
+			$('#message_error').show();
 		} else {
 			$('form').hide();
 			$('#SuccessContainer').css('display', 'flex');

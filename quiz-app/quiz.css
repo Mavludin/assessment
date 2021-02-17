@@ -21,6 +21,7 @@ body {
 }
 
 #quiz-wrapper {
+    display: none;
     width: 100%;
     max-width: 800px;
     margin: 32px auto;
@@ -31,6 +32,7 @@ body {
     background-color: #2b3252;
     color: #fad744;
     text-align: center;
+    position: relative;
 }
 
 .quiz-item {

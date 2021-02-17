@@ -40,6 +40,8 @@ $(function(){
 	const getData = () => {
 		$.get('https://5d76bf96515d1a0014085cf9.mockapi.io/quiz', data => {
 			
+			const quizWrapper = document.getElementById('quiz-wrapper');
+			quizWrapper.style.display = 'block'
 			data.map(item => {
 				createQuizSections(item);
 			});
